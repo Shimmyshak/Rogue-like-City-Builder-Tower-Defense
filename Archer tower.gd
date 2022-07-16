@@ -13,8 +13,10 @@ var target = null
 var attackable = true
 var en_array = []
 
+onready var aoe = preload("res://Enemies/aoe symbol.tscn")
+
 func _ready():
-	mod_change(3) #REMOVE ONCE CITIZEN ASSIGNING WORKS
+	
 #	line.add_point(global_position)
 	yield(get_tree().create_timer(randf()),"timeout")
 	while true:
@@ -28,12 +30,15 @@ func _process(delta):
 #		line.add_point(target.global_position)
 
 func attack_target():
-	if mod != 0: #if no one is working here
+	if mod == 0: #if no one is working here ##not in final prodduct, actually
 		if attackable and en_array.size() != 0: #if the tree has an enemy and attack timer is up
 			if AOE:
 				attackable = false
 				for x in en_array.size():
 					en_array[x].damage(damage,type)
+				var inst = aoe.instance()
+				inst.show_behind_parent = true
+				add_child(inst)
 			else:
 				en_array[0].damage(damage,type)
 				attackable = false
