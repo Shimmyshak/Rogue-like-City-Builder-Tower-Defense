@@ -58,7 +58,6 @@ func attack_target():
 				elif type == "acid":
 					inst.animation = "hex"
 					inst.show_behind_parent = true
-					inst.scale = Vector2(9,9)
 					add_child(inst)
 				else:
 					inst.animation = "ice"
@@ -68,6 +67,8 @@ func attack_target():
 				var inst = projectile.instance()
 				if type == "": #arrow
 					inst.animation("arrow")
+				elif type == "":
+					inst.animation("bolt")
 				inst.target = en_array[0].global_position
 				inst.position.y -= 40
 				add_child(inst)

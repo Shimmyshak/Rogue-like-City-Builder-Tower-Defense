@@ -10,5 +10,5 @@ func _process(delta):
 			if frame == 16:
 				queue_free()
 		"hex":
-			if frame == 7:
+			if frame == 15:
 				queue_free()

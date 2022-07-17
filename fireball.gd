@@ -1,4 +1,4 @@
-extends KinematicBody2D
+ extends KinematicBody2D
 
 onready var anim = $fireball
 onready var expl = preload("res://Enemies/explotion.tscn")

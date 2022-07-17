@@ -15,22 +15,22 @@ var wave
 func _ready():
 	wave = 0
 	if on:
-		yield(get_tree().create_timer(20),"timeout")
-		wave = 1
+		yield(get_tree().create_timer(10),"timeout")
+		public.wave = 1
 		timer = reset
 		man(goblin,3,0.4)
-		yield(get_tree().create_timer(20),"timeout")
-		wave = 2
+		yield(get_tree().create_timer(10),"timeout")
+		public.wave = 2
 		man(goblin,5,0.2)
-		yield(get_tree().create_timer(20),"timeout")
-		wave = 3
+		yield(get_tree().create_timer(10),"timeout")
+		public.wave = 3
 		man(goblin,3,0.3)
 		man(dog,2,1)
-		yield(get_tree().create_timer(20),"timeout")
-		wave = 4
+		yield(get_tree().create_timer(10),"timeout")
+		public.wave = 4
 		man(goblin,9,0.15)
-		yield(get_tree().create_timer(20),"timeout")
-		wave = 5
+		yield(get_tree().create_timer(10),"timeout")
+		public.wave = 5
 		man(summoner,1,0)
 		man(dog,2,0.5)
 	
