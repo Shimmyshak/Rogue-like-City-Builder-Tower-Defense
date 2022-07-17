@@ -35,18 +35,14 @@ func _process(delta):
 			build_valid = true
 			global_position.x = tile_position.x + 32
 			global_position.y = tile_position.y + 32
-			
+		if Input.is_action_just_pressed("l_click"):
+			get_node("../Node2D/path").set_cellv(current_tile,1)
+			click = true
 	else:
 		attack_target()
-	if !click:
-		if Input.is_action_just_pressed("l_click"):
-			click = true
-#	line.remove_point(1) #scrapped for now.
-#	if line != null and en_array.size() != 0:
-#		line.add_point(target.global_position)
 
 func attack_target():
-	if mod == 0: #if no one is working here ##not in final prodduct, actually
+	if mod == 0: #might be in final, if time.
 		if attackable and en_array.size() != 0: #if the tree has an enemy and attack timer is up
 			if AOE:
 				attackable = false

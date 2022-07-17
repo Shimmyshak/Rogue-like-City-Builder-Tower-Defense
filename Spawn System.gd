@@ -10,6 +10,7 @@ const hel_gob = preload("res://Enemies/Hellmet goblin.tscn")
 const shellmet = preload("res://Enemies/shellmet.tscn")
 const summoner = preload("res://Enemies/summoner.tscn") #MINI BOSSES
 const dave = preload("res://Enemies/dark_dwarf.tscn")
+const big_dog = preload("res://Enemies/big_dog.tscn")
 
 var wave
 func _ready():
