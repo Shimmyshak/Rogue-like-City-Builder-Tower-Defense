@@ -13,42 +13,56 @@ func _ready():
 	yield(get_tree().create_timer(0.2),"timeout")
 	queue_free()
 
+var power
+
 func tower():
 	match round(rand_range(0,5)):
 		0.0:
 			if public.bias != 0.0:
 				public.bias = 0.0
-				instance_it(arrow)
+				match power:
+					1:
+						instance_it(arrow)
 			else:
 				tower()
 		1.0:
 			if public.bias != 1.0:
 				public.bias = 1.0
-				instance_it(fire)
+				match power:
+					1:
+						instance_it(fire)
 			else:
 				tower()
 		2.0:
 			if public.bias != 2.0:
 				public.bias = 2.0
-				instance_it(furnace)
+				match power:
+					1:
+						instance_it(furnace)
 			else:
 				tower()
 		3.0:
 			if public.bias != 3.0:
 				public.bias = 3.0
-				instance_it(ice)
+				match power:
+					1:
+						instance_it(ice)
 			else:
 				tower()
 		4.0:
 			if public.bias != 4.0:
 				public.bias = 4.0
-				instance_it(acid)
+				match power:
+					1:
+						instance_it(acid)
 			else:
 				tower()
 		5.0:
 			if public.bias != 5.0:
 				public.bias = 5.0
-				instance_it(electric)
+				match power:
+					1:
+						instance_it(electric)
 			else:
 				tower()
 

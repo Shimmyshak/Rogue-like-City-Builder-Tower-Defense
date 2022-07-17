@@ -1,14 +1,14 @@
 extends KinematicBody2D #exact copy of enemy script, summons every 10 seconds
 
 onready var sprite = $AnimatedSprite
-onready var particle = $CPUParticles2D
 export var hp = 10.0 
 export var spd = 60
 export var dmg = 1.0
 export var bomber = false #dies on contact.
 export var atk_range = 100.0 
 export var value = 1.0
-var spd1 = spd
+export var resistance = 1.0
+var spd1 = 1
 var velo = Vector2.ZERO
 var effect_time = 0.0
 
@@ -21,20 +21,27 @@ var DOT = 0 #Damage Over Time
 
 onready var bar = $ProgressBar
 
+var stop = 1.0 #ice
+var ouch = 0.0 #acid
+var burn = 0.0 #fire
 func damage(dmg,mod):
 	hp -= (dmg * dmg_mod)
 	if hp <= 0: #if health is lower than 0, remove self.
 		public.dosh += value
 		queue_free()
 	print(hp)
-	particle.emitting = true # Extremely rudementary particle system.
 	match mod:
-		"fire":
+		"fire": #poison, actully
 			DOT = .008
-		"acid":
+			burn = 5.0 #lasts 5 seconds
+			
+		"acid": 
 			dmg_mod = 1.5 #50% more damage
+			ouch = 5.0
 		"ice":
-			spd = spd1 * 0.8
+			spd = spd1
+			spd *= 0.6
+			stop = 5
 	
 
 func _ready():
@@ -45,8 +52,25 @@ func _ready():
 		level_nav = tree.get_nodes_in_group("nav")[0]
 	if tree.has_group("hearth"):
 		hearth = tree.get_nodes_in_group("hearth")[0]
+	spd1 = spd
+
+onready var curse = $curseparticle
 
 func _physics_process(delta):
+	stop -= delta * resistance
+	burn -= delta * resistance
+	ouch -= delta * resistance
+	if stop <= 0:
+		spd = spd1
+	if burn <= 0:
+		DOT = 0
+	if ouch <= 0:
+		dmg_mod = 1.0
+	if ouch >= 0 and curse != null:
+		curse.emitting = true
+	elif curse != null:
+		curse.emitting = false
+	
 	bar.value = hp
 	if DOT != 0:
 		damage(DOT,"") #pretty terible solution.
@@ -64,7 +88,8 @@ func navigate():
 			if global_position == path[0]:
 				path.pop_front() 
 		else:
-			pass #ATTACK
+			public.tower_hp -= dmg
+			queue_free() #match with bomber, not yet,
 
 func generate_path():
 	if hearth != null and level_nav != null:

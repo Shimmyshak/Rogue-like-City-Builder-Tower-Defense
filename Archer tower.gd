@@ -14,6 +14,7 @@ var attackable = true
 var en_array = []
 
 onready var aoe = preload("res://Enemies/aoe symbol.tscn")
+onready var projectile = preload("res://Enemies/fireball.tscn")
 
 func _ready():
 	
@@ -23,8 +24,23 @@ func _ready():
 		yield(get_tree().create_timer(attack_spd),"timeout")
 		attackable = true
 
+var build_valid = false
+var click = false
 func _process(delta):
-	attack_target()
+	if !click:
+#		global_position = get_global_mouse_position()
+		var current_tile = get_node("../Node2D/path").world_to_map(get_global_mouse_position())
+		var tile_position = get_node("../Node2D/path").map_to_world(current_tile)
+		if get_node("../Node2D/path").get_cellv(current_tile) == -1:
+			build_valid = true
+			global_position.x = tile_position.x + 32
+			global_position.y = tile_position.y + 32
+			
+	else:
+		attack_target()
+	if !click:
+		if Input.is_action_just_pressed("l_click"):
+			click = true
 #	line.remove_point(1) #scrapped for now.
 #	if line != null and en_array.size() != 0:
 #		line.add_point(target.global_position)
@@ -37,14 +53,30 @@ func attack_target():
 				for x in en_array.size():
 					en_array[x].damage(damage,type)
 				var inst = aoe.instance()
-				inst.show_behind_parent = true
-				add_child(inst)
+				if type == "":
+					add_child(inst)
+				elif type == "acid":
+					inst.animation = "hex"
+					inst.show_behind_parent = true
+					inst.scale = Vector2(9,9)
+					add_child(inst)
+				else:
+					inst.animation = "ice"
+					inst.show_behind_parent = true
+					add_child(inst)
 			else:
-				en_array[0].damage(damage,type)
+				var inst = projectile.instance()
+				if type == "": #arrow
+					inst.animation("arrow")
+				inst.target = en_array[0].global_position
+				inst.position.y -= 40
+				add_child(inst)
 				attackable = false
-				if removal:
-					en_array.erase(0)
+				yield(get_tree().create_timer(0.1),"timeout")
+				if en_array.size() != 0:
+					en_array[0].damage(damage,type)
 
+	
 func mod_change(new_mod):
 	match mod: #remove old passive buff
 		1: #races represented with numbers 1-4

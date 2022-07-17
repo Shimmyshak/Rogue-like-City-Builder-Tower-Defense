@@ -3,12 +3,9 @@ extends AnimatedSprite
 
 func _process(delta):
 	match animation:
-		"ice":
+		"fire":
 			if frame == 7:
 				queue_free()
-		"poison":
-			if frame == 16:
-				queue_free()
-		"hex":
-			if frame == 7:
+		"":
+			if frame == null:
 				queue_free()

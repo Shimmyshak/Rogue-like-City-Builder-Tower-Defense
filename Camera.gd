@@ -1,10 +1,8 @@
 extends Camera2D
 
-onready var dice = preload("res://Enemies/weapon dice.tscn")
-
 var cam_spd = 3
 const min_zoom = Vector2(0.6,0.6)
-const max_zoom = Vector2(2,2)
+const max_zoom = Vector2(1.4,1.4)
 const zoom_spd = Vector2(0.2,0.2)
 
 func _ready():
@@ -20,10 +18,8 @@ func _process(delta):
 		position.x -= cam_spd * zoom.x
 	if Input.is_action_pressed("right"):
 		position.x += cam_spd * zoom.x
-	if Input.is_action_just_pressed("dice"): #add price
-		var inst = dice.instance()
-		self.add_child(inst)
-	#clamp function here
+	global_position.x = clamp(global_position.x,-28,-10)
+	global_position.y = clamp(global_position.y,-100,300)
 
 func _input(event):
 	if event is InputEventMouseButton:
