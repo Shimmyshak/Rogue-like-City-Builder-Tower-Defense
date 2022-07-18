@@ -27,9 +27,11 @@ func _ready():
 var build_valid = false
 var click = false
 func _process(delta):
+	if public.lose:
+		queue_free()
 	if !click:
 #		global_position = get_global_mouse_position()
-		var current_tile = get_node("../Node2D/path").world_to_map(get_global_mouse_position())
+		var current_tile = get_node ("../Node2D/path").world_to_map(get_global_mouse_position())
 		var tile_position = get_node("../Node2D/path").map_to_world(current_tile)
 		if get_node("../Node2D/path").get_cellv(current_tile) == -1:
 			build_valid = true
@@ -49,22 +51,29 @@ func attack_target():
 				for x in en_array.size():
 					en_array[x].damage(damage,type)
 				var inst = aoe.instance()
-				if type == "":
+				if type == "": #poison
 					add_child(inst)
+					audio.play("res://assets/noises/powerUp.wav")
 				elif type == "acid":
 					inst.animation = "hex"
+					audio.play("res://assets/noises/blipSelect.wav")
 					inst.show_behind_parent = true
 					add_child(inst)
 				else:
 					inst.animation = "ice"
+					audio.play("res://assets/noises/blipSelect (1).wav")
 					inst.show_behind_parent = true
 					add_child(inst)
 			else:
 				var inst = projectile.instance()
 				if type == "": #arrow
 					inst.animation("arrow")
-				elif type == "":
+					audio.play("res://assets/noises/hitHurt (1).wav")
+				elif type == "lec":
 					inst.animation("bolt")
+					audio.play("res://assets/noises/synth.wav")
+				else:
+					audio.play("res://assets/noises/explosion (1).wav")
 				inst.target = en_array[0].global_position
 				inst.position.y -= 40
 				add_child(inst)

@@ -5,3 +5,7 @@ var wave = 0
 var tower_hp = 10 #
 
 onready var dosh = 10 #cash
+
+var lose = false
+
+var roll = ""

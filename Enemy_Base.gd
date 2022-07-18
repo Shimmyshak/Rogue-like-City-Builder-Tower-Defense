@@ -19,7 +19,7 @@ var hearth = null
 var dmg_mod = 1.0
 var DOT = 0 #Damage Over Time
 
-onready var bar = $ProgressBar
+onready var bar = $progressbar
 
 var stop = 1.0 #ice
 var ouch = 0.0 #acid
@@ -28,8 +28,8 @@ func damage(dmg,mod):
 	hp -= (dmg * dmg_mod)
 	if hp <= 0: #if health is lower than 0, remove self.
 		public.dosh += value
+		audio.play("res://assets/noises/pickupCoin (1).wav")
 		queue_free()
-	print(hp)
 	match mod:
 		"fire": #poison, actully
 			DOT = .008
@@ -55,8 +55,11 @@ func _ready():
 	spd1 = spd
 
 onready var curse = $curseparticle
+onready var fire = $fire
 
 func _physics_process(delta):
+	if public.lose:
+		queue_free()
 	stop -= delta * resistance
 	burn -= delta * resistance
 	ouch -= delta * resistance
@@ -70,6 +73,10 @@ func _physics_process(delta):
 		curse.emitting = true
 	elif curse != null:
 		curse.emitting = false
+	if burn >= 0 and fire:
+		fire.emitting = true
+	elif fire != null:
+		fire.emitting = false
 	
 	bar.value = hp
 	if DOT != 0:

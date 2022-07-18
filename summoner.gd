@@ -19,7 +19,7 @@ var hearth = null
 var dmg_mod = 1.0
 var DOT = 0 #Damage Over Time
 
-onready var bar = $ProgressBar
+onready var bar = $progressbar
 onready var anim = $AnimatedSprite
 
 func damage(dmg,mod):
@@ -27,7 +27,6 @@ func damage(dmg,mod):
 	if hp <= 0: #if health is lower than 0, remove self.
 		public.dosh += value
 		queue_free()
-	print(hp)
 	particle.emitting = true # Extremely rudementary particle system.
 	match mod:
 		"fire":
@@ -50,6 +49,7 @@ func _ready():
 	while true:
 		yield(get_tree().create_timer(9),"timeout")
 		anim.play("summon")
+		audio.play("res://assets/noises/laserShoot.wav")
 		yield(get_tree().create_timer(1),"timeout")
 		for x in 3:
 			randomize()
@@ -60,6 +60,8 @@ func _ready():
 
 
 func _physics_process(delta):
+	if public.lose:
+		queue_free()
 	if anim.frame == 9:
 		anim.play("run")
 	bar.value = hp

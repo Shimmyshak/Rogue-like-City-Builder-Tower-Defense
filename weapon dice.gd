@@ -22,16 +22,17 @@ onready var electric3 = preload("res://Offense towers/lv3/electric3.tscn")
 func _ready():
 	randomize()
 	tower()
-	yield(get_tree().create_timer(0.2),"timeout")
+	yield(get_tree().create_timer(1.5),"timeout")
 	queue_free()
 
 var power
 
 func tower():
-	match round(rand_range(0,5)):
-		0.0:
+	match randi()%6:
+		0:
 			if public.bias != 0.0:
 				public.bias = 0.0
+				public.roll = "archer"
 				match power:
 					1:
 						instance_it(arrow)
@@ -41,9 +42,10 @@ func tower():
 						instance_it(arrow3)
 			else:
 				tower()
-		1.0:
+		1:
 			if public.bias != 1.0:
 				public.bias = 1.0
+				public.roll = "fire"
 				match power:
 					1:
 						instance_it(fire)
@@ -53,9 +55,10 @@ func tower():
 						instance_it(fire3)
 			else:
 				tower()
-		2.0:
+		2:
 			if public.bias != 2.0:
 				public.bias = 2.0
+				public.roll = "poison"
 				match power:
 					1:
 						instance_it(furnace)
@@ -65,9 +68,10 @@ func tower():
 						instance_it(furnace3)
 			else:
 				tower()
-		3.0:
+		3:
 			if public.bias != 3.0:
 				public.bias = 3.0
+				public.roll = "ice"
 				match power:
 					1:
 						instance_it(ice)
@@ -77,9 +81,10 @@ func tower():
 						instance_it(ice3)
 			else:
 				tower()
-		4.0:
+		4:
 			if public.bias != 4.0:
 				public.bias = 4.0
+				public.roll = "soul"
 				match power:
 					1:
 						instance_it(acid)
@@ -89,9 +94,10 @@ func tower():
 						instance_it(acid3)
 			else:
 				tower()
-		5.0:
+		5:
 			if public.bias != 5.0:
 				public.bias = 5.0
+				public.roll = "bolt"
 				match power:
 					1:
 						instance_it(electric)
@@ -103,6 +109,7 @@ func tower():
 				tower()
 
 func instance_it(it):
+	yield(get_tree().create_timer(1.3),"timeout")
 	var inst = it.instance()
 	inst.global_position = get_global_mouse_position()
 	get_tree().root.add_child(inst)
